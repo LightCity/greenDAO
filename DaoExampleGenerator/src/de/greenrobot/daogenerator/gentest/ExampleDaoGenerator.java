@@ -15,6 +15,8 @@
  */
 package de.greenrobot.daogenerator.gentest;
 
+import java.io.IOException;
+
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Property;
@@ -31,37 +33,61 @@ import de.greenrobot.daogenerator.ToMany;
 public class ExampleDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1000, "de.greenrobot.daoexample");
+        Schema schema = new Schema(1, "com.souche.cheniu.db.domainmodel");
 
-        addNote(schema);
-        addCustomerOrder(schema);
+        Entity domain = schema.addEntity("Domain");
+        domain.addIdProperty();
+        domain.addBooleanProperty("isReadOnly").notNull();
+        domain.addStringProperty("title").notNull();
+        domain.addStringProperty("nodeProtocalHost").notNull();
+        domain.addStringProperty("h5ProtocalHost").notNull();
+        domain.addStringProperty("walletOldProtocalHost").notNull();
+        domain.addStringProperty("walletNewProtocalHost").notNull();
+        domain.addStringProperty("weijinProtocalHost").notNull();
+        domain.addStringProperty("loanProtocalHost").notNull();
+        domain.addStringProperty("fayeUrl").notNull();
+        domain.addStringProperty("auctionHost").notNull();
+        domain.addStringProperty("realtimeAuctionManagerDetailUrlTemplate").notNull();
+        domain.addStringProperty("htmlPkgUrlTemplate").notNull();
+        domain.addStringProperty("auctionHomeUrl").notNull();
+        domain.addStringProperty("baozhangjinIntroduceUrl").notNull();
+        domain.addStringProperty("prepayApiUrlTemplate").notNull();
 
-        new DaoGenerator().generateAll(schema, "../DaoExample/src-gen");
+        new DaoGenerator().generateAll(schema, "/Users/longli/tmp/DaoDomain");
     }
 
-    private static void addNote(Schema schema) {
-        Entity note = schema.addEntity("Note");
-        note.addIdProperty();
-        note.addStringProperty("text").notNull();
-        note.addStringProperty("comment");
-        note.addDateProperty("date");
-    }
-
-    private static void addCustomerOrder(Schema schema) {
-        Entity customer = schema.addEntity("Customer");
-        customer.addIdProperty();
-        customer.addStringProperty("name").notNull();
-
-        Entity order = schema.addEntity("Order");
-        order.setTableName("ORDERS"); // "ORDER" is a reserved keyword
-        order.addIdProperty();
-        Property orderDate = order.addDateProperty("date").getProperty();
-        Property customerId = order.addLongProperty("customerId").notNull().getProperty();
-        order.addToOne(customer, customerId);
-
-        ToMany customerToOrders = customer.addToMany(order, customerId);
-        customerToOrders.setName("orders");
-        customerToOrders.orderAsc(orderDate);
-    }
+//    public static void main(String[] args) throws Exception {
+//        Schema schema = new Schema(1000, "de.greenrobot.daoexample");
+//
+//        addNote(schema);
+//        addCustomerOrder(schema);
+//
+//        new DaoGenerator().generateAll(schema, "/Users/longli/tmp/DaoExample/src-gen");
+//    }
+//
+//    private static void addNote(Schema schema) {
+//        Entity note = schema.addEntity("Note");
+//        note.addIdProperty();
+//        note.addStringProperty("text").notNull();
+//        note.addStringProperty("comment");
+//        note.addDateProperty("date");
+//    }
+//
+//    private static void addCustomerOrder(Schema schema) {
+//        Entity customer = schema.addEntity("Customer");
+//        customer.addIdProperty();
+//        customer.addStringProperty("name").notNull();
+//
+//        Entity order = schema.addEntity("Order");
+//        order.setTableName("ORDERS"); // "ORDER" is a reserved keyword
+//        order.addIdProperty();
+//        Property orderDate = order.addDateProperty("date").getProperty();
+//        Property customerId = order.addLongProperty("customerId").notNull().getProperty();
+//        order.addToOne(customer, customerId);
+//
+//        ToMany customerToOrders = customer.addToMany(order, customerId);
+//        customerToOrders.setName("orders");
+//        customerToOrders.orderAsc(orderDate);
+//    }
 
 }
